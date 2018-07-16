@@ -5,6 +5,6 @@ To be continue:
 
 2.separate PR curve with RECALL STEPS
 
-3.modified error analysis with cat_mode //finished
+3.modified error analysis with cat_mode  //finished
 
-4.result visualization
+4.result visualization                   //finished
