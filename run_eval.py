@@ -248,27 +248,30 @@ class evaluation:
             print(
                 'Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=all ] = %f' % AP[5])
 
-    def err_analysis(self): #unfinished
+    def err_analysis(self):  # unfinished
+        print('Runing error analysis......')
+        t = time.time()
         if self.cat_flag == True:
-            for i in range(1, len(self.pred_boxes_cat) + 1, 1):
-                for j in range(1, self.cat_num + 1, 1):
-                    if((j in self.gt_boxes_cat[i]) and (j in self.pred_boxes_cat[i])):
-                        per_cat_img = my_eval.compute_map(self.gt_boxes_cat[i][j], self.gt_class_ids_cat[i][j],
-                                                          self.pred_boxes_cat[i][j], self.pred_class_ids_cat[
-                                                              i][j], self.pred_scores_cat[i][j],
-                                                          iou_threshold=self.iou_threshold)
-                        F = per_cat_img[1]
-                        self.eval['FP_bg'][j] += F['FP_bg']
-                        self.eval['FP_cls'][j] += F['FP_cls']
-                        self.eval['FN'][j] += F['FN']
-                    elif j in self.gt_boxes_cat[i]:
-                        self.eval['FN'][j] += self.gt_boxes_cat[i][j].shape[0]
-                    else:
-                        self.eval['FN'][j] += self.gt_boxes_cat[i][j].shape[0]
-                        
+            self.fetch_data()
+        for i in range(len(self.pred_boxes)):
+            per_image = my_eval.compute_map(self.gt_boxes[i + 1], self.gt_class_ids[i + 1],
+                                            self.pred_boxes[i + 1], self.pred_class_ids[i +
+                                                                                        1], self.pred_scores[i + 1],
+                                            iou_threshold=self.iou_threshold)
+            b = per_image[0]
+            F = per_image[1]
+            self.eval['FP_bg'] += F['FP_bg']
+            self.eval['FP_cls'] += F['FP_cls']
+            self.eval['FN'] += F['FN']
+        print('Analysis finished (t=%fs)' % (time.time() - t))
+        print('Attention : threshold was designed as : %f' % self.threshold)
+        print('Number of FP_cls : %d' % self.eval['FP_cls'])
+        print('Number of FP_bg : %d' % self.eval['FP_bg'])
+        print('Number of FN : %d' % self.eval['FN'])
+
 
 if __name__ == "__main__":
 
     a = evaluation('data/instances_gt_test.json',
-                   './data/unresized/result_9999.json', cat=True)
-    a.get_mAP()
+                   './data/Retinanet_unresized/result_9999.json', threshold=0.5, cat=True)
+    a.err_analysis()

@@ -1,10 +1,10 @@
 # Evaluation
-代码里还有很多可以改进:
+To be continue:
 
-1.引入maxdets
+1.add maxdets format
 
-2.为PR曲线划分RECALL STEPS
+2.separate PR curve with RECALL STEPS
 
-3.错误分析部分只写了cat=false的部分
+3.modified error analysis with cat_mode //finished
 
-4.图形可视化的部分
+4.result visualization
