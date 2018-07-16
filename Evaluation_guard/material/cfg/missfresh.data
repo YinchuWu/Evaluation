@@ -1,0 +1,8 @@
+classes=26
+train=/mnt/disk1/lvsikai/missfresh/Data/5MissFreshSmartShelf_Exp/train.txt
+
+val=/mnt/disk1/lvsikai/missfresh/Data/5MissFreshSmartShelf_Exp/val.txt
+
+names=/mnt/disk1/lvsikai/missfresh/darknet-tfl/tfl/MissFreshSmartShelf/goods.names
+
+backup=/mnt/disk1/lvsikai/missfresh/darknet-tfl/tfl/MissFreshSmartShelf/backup
