@@ -95,10 +95,13 @@ class evaluation:
                 # pred_name['image_id'] = item
                 self.pred_scores[item['image_id']] = np.array([item['score']])
         for i in range(len(self.pred_boxes)):
-            self.pred_boxes[i + 1] = self.pred_boxes[i +
-                                                     1].reshape([-1, 4])
-            self.pred_boxes[i +
-                            1] = self.format_trans(self.pred_boxes[i + 1])
+            try:
+                self.pred_boxes[i + 1] = self.pred_boxes[i +
+                                                         1].reshape([-1, 4])
+                self.pred_boxes[i +
+                                1] = self.format_trans(self.pred_boxes[i + 1])
+            except:
+                continue
         print("loading finished (t=%fs)" % (time.time() - t))
 
     def fetch_data_cat(self):
@@ -182,11 +185,14 @@ class evaluation:
                     item['score']])
 
         for i in range(len(self.pred_boxes_cat)):
-            for j in self.pred_boxes_cat[i + 1]:
-                self.pred_boxes_cat[i + 1][j] = self.pred_boxes_cat[i +
-                                                                    1][j].reshape([-1, 4])
-                self.pred_boxes_cat[i +
-                                    1][j] = self.format_trans(self.pred_boxes_cat[i + 1][j])
+            try:
+                for j in self.pred_boxes_cat[i + 1]:
+                    self.pred_boxes_cat[i + 1][j] = self.pred_boxes_cat[i +
+                                                                        1][j].reshape([-1, 4])
+                    self.pred_boxes_cat[i +
+                                        1][j] = self.format_trans(self.pred_boxes_cat[i + 1][j])
+            except:
+                continue
         self.pred_match_cat = {i + 1: [] for i in range(self.cat_num)}
         self.scores_cat = {i + 1: [] for i in range(self.cat_num)}
         # print(self.pred_scores[2])
@@ -209,17 +215,21 @@ class evaluation:
             t = time.time()
             print('Runing per image evaluation........')
             for i in range(len(self.pred_boxes)):
-                per_image = my_eval.compute_map(self.gt_boxes[i + 1], self.gt_class_ids[i + 1],
-                                                self.pred_boxes[i + 1], self.pred_class_ids[i +
-                                                                                            1], self.pred_scores[i + 1],
-                                                iou_threshold=self.iou_threshold)
+                try:
+                    per_image = my_eval.compute_map(self.gt_boxes[i + 1], self.gt_class_ids[i + 1],
+                                                    self.pred_boxes[i + 1], self.pred_class_ids[i +
+                                                                                                1], self.pred_scores[i + 1],
+                                                    iou_threshold=self.iou_threshold)
+                except:
+                    continue
+
                 b = per_image[0]
                 F = per_image[1]
                 self.eval['FP_bg'] += F['FP_bg']
                 self.eval['FP_cls'] += F['FP_cls']
                 self.eval['FN'] += F['FN']
-                if b < 0.8:
-                    print("Image:%d hasn't been fed up =.=" % i)
+                # if b < 0.8:
+                #     print("Image:%d hasn't been fed up =.=" % i)
                 a += b
             print('Accumulating evaluation results........')
             a = a / len(self.pred_boxes)
@@ -233,8 +243,11 @@ class evaluation:
             t = time.time()
             print('Runing per class evaluation........')
             for i in range(10):
-                AP[i] = my_eval.compute_map_cat(self.gt_boxes_cat, self.pred_boxes_cat,
-                                                self.pred_scores_cat, self.cat_num, IoU[i])
+                try:
+                    AP[i] = my_eval.compute_map_cat(self.gt_boxes_cat, self.pred_boxes_cat,
+                                                    self.pred_scores_cat, self.cat_num, IoU[i])
+                except:
+                    print('AP[%d] computation fails' % i)
             print('Accumulating evaluation results........')
             print('Done (t=%fs).' % (time.time() - t))
             mAP = np.mean(AP)

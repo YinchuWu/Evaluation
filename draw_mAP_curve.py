@@ -20,7 +20,7 @@ class accmulation:
 
     def load_mAP(self):
         for item in self.pred_file:
-            cpk_id = int(item.split('_')[-1][:-5]) + 1
+            cpk_id = int(item.split('_')[-1][4:-5]) + 1
             modules_tmp = Evaluation.evaluation(self.gt_file,
                                                 item, threshold=self.threshold, cat=self.cat, iou_threshold=self.iou_threshold)
             modules_tmp.get_mAP()
@@ -63,8 +63,9 @@ class accmulation:
         plt.legend()
         plt.show()
 
+
 if __name__ == '__main__':
-    #ckp must be saved as ***_5000.json
+    # ckp must be saved as ***_5000.json
     a = accmulation('data/instances_gt_test.json',
-                    './data/Retinanet_size600', threshold=0.5, cat=True)
+                    './data/Retinanet_size300', threshold=0.5, cat=True)
     a.draw_map_curve()
