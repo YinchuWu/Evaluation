@@ -9,7 +9,7 @@ class analysis(load_data):
     """docstring for analysis"""
 
     def __init__(self, file_path, classes, image_size=(1080, 1920), is_gt=True, threshold=0.05):
-        super(analysis, self).__init__(file_path, is_gt=True, threshold=0.05)
+        super(analysis, self).__init__(file_path, is_gt=is_gt, threshold=0.05)
         self.image_size = image_size
         self.k_means_center = []
         # self.boxes = {}
@@ -91,4 +91,4 @@ if __name__ == '__main__':
     a = analysis(file_path='data/instances_gt_test.json', classes=7)
     a.init_Analysis()
     a.show_distribution()
-    # print(a.bbox_width_averaged)
+    print(a.k_means_center)

@@ -14,11 +14,11 @@ print('Running demo for *%s* results.' % (annType))
 # initialize COCO ground truth api
 dataDir = '.'
 dataType = 'gt_test'
-annFile = '%s/data/%s.json' % (dataDir, dataType)
+annFile = 'gt_coco_annotations/1.json'
 cocoGt = COCO(annFile)
 
 # initialize COCO detections api
-resFile = './data/unresized/result_9999.json'
+resFile = 'pred_coco_annotations/1.json'
 cocoDt = cocoGt.loadRes(resFile)
 
 imgIds = sorted(cocoGt.getImgIds())

@@ -67,5 +67,5 @@ class accmulation:
 if __name__ == '__main__':
     # ckp must be saved as ***_5000.json
     a = accmulation('data/instances_gt_test.json',
-                    './data/Retinanet_size300', threshold=0.5, cat=True)
+                    './data/Retinanet_size300', threshold=0.05, cat=True)
     a.draw_map_curve()

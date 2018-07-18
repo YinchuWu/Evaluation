@@ -28,6 +28,7 @@ class load_data:
 
         with open(self.file_path) as f:
             js_format = json.load(f)
+            # print(js_format)
             gt_anno = js_format['annotations']
 
         # store gt_bbox and gt_class_ids

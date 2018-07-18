@@ -117,7 +117,10 @@ class evaluation:
         for item in gt_anno:
             #{'id': 1, 'iscrowd': 0, 'image_id': 1, 'category_id': 1, 'area': 0.0, 'segmentation': [[0.0]],
             #'bbox': [-1, 262, 252, 284]}
+
             cate = fuckyou_trans(item['category_id'])
+            #cate = item['category_id']
+
             # if cate == 7:
             #     print(cate)
             self.cat_num = max(cate, self.cat_num)
@@ -285,6 +288,9 @@ class evaluation:
 
 if __name__ == "__main__":
 
-    a = evaluation('data/instances_gt_test.json',
-                   './data/Retinanet_unresized/result_9999.json', threshold=0.5, cat=True)
-    a.err_analysis()
+    # a = evaluation('data/instances_gt_test.json',
+    #                './data/Retinanet_unresized/result_9999.json', threshold=0.5, cat=True)
+    # a.err_analysis()
+    test = evaluation('gt_coco_annotations/1.json',
+                      'pred_coco_annotations/1.json', threshold=0.5, cat=True)
+    test.get_mAP()
